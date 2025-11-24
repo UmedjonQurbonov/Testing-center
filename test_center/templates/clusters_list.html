@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Выберите направление — Test Center{% endblock %}
+
+{% block main %}
+<div style="text-align:center; padding:40px 20px;">
+    <h1 style="font-size:2.8rem; color:#2c3e50; margin-bottom:15px;">
+        Выберите направление тестирования
+    </h1>
+    <p style="font-size:1.3rem; color:#666; margin-bottom:50px;">
+        Полные варианты ЕГЭ и ОГЭ по всем предметам
+    </p>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:30px; max-width:1200px; margin:0 auto;">
+        {% for cluster in clusters %}
+        <div style="background:white; border-radius:20px; padding:30px; text-align:center; 
+                    box-shadow:0 15px 35px rgba(0,0,0,0.1); transition:0.4s;">
+            <h3 style="font-size:1.8rem; color:#2c3e50; margin:20px 0;">
+                {{ cluster.name }}
+            </h3>
+            <p style="color:#777; margin:15px 0;">
+                {{ cluster.subjects.count }} предметов
+            </p>
+            <a href="{% url 'subjects_list' cluster.id %}" 
+               style="display:inline-block; padding:14px 40px; background:#3498db; color:white; 
+                      text-decoration:none; border-radius:50px; font-weight:600; margin-top:20px;">
+                Пройти тест
+            </a>
+        </div>
+        {% empty %}
+        <p style="grid-column:1/-1; color:#999; font-size:1.4rem;">
+            Пока нет доступных направлений
+        </p>
+        {% endfor %}
+    </div>
+
+    <div style="margin-top:60px;">
+        <a href="{% url 'home' %}" style="color:#3498db; text-decoration:none; font-size:1.1rem;">
+            ← Вернуться на главную
+        </a>
+    </div>
+</div>
+{% endblock %}

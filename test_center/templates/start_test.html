@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div style="max-width:900px; margin:40px auto; padding:20px;">
+    <div style="text-align:center; margin-bottom:40px; background:white; padding:30px; border-radius:20px; 
+                box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+        <h1 style="font-size:2.6rem; color:#2c3e50; margin-bottom:10px;">
+            {{ subject.name }}
+        </h1>
+        <p style="font-size:1.4rem; color:#666;">
+            Попытка №{{ attempt }} • {{ questions|length }} заданий
+        </p>
+        <div style="margin-top:20px; color:#e74c3c; font-weight:600; font-size:1.1rem;">
+            Внимание: тест можно сдать только один раз!
+        </div>
+    </div>
+
+    <form method="post" action="{% url 'finish_test' cluster.id subject.id %}">
+        {% csrf_token %}
+        <input type="hidden" name="attempt" value="{{ attempt }}">
+
+        {% for item in questions %}
+        <div style="background:white; border-radius:16px; padding:28px; margin-bottom:28px; 
+                    box-shadow:0 8px 25px rgba(0,0,0,0.08); border-left:6px solid #3498db;">
+            
+            <div style="display:flex; align-items:flex-start; gap:15px;">
+                <span style="background:#3498db; color:white; width:40px; height:40px; border-radius:50%; 
+                            display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.2rem; flex-shrink:0;">
+                    {{ forloop.counter }}
+                </span>
+                <div style="flex:1;">
+                    <p style="font-size:1.35rem; color:#2c3e50; margin-bottom:20px; line-height:1.5;">
+                        {{ item.question.text }}
+                    </p>
+
+                    <div style="display:grid; gap:14px;">
+                        {% for answer in item.answers %}
+                        <label style="display:flex; align-items:center; background:#f8f9fa; padding:16px 20px; 
+                                     border-radius:12px; cursor:pointer; transition:all 0.2s; border:2px solid transparent;">
+                            <input type="radio" name="q_{{ item.question.id }}" value="{{ answer.id }}" required 
+                                   style="margin-right:15px; transform:scale(1.3);">
+                            <span style="font-size:1.15rem; color:#333;">{{ answer.text }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div style="text-align:center; margin:50px 0;">
+            <button type="submit" 
+                    style="padding:18px 60px; background:#27ae60; color:white; border:none; 
+                           border-radius:50px; font-size:1.5rem; font-weight:700; cursor:pointer;
+                           box-shadow:0 10px 30px rgba(39,174,96,0.4); transition:all 0.3s;">
+                Завершить тест и получить результат
+            </button>
+        </div>
+
+        <div style="text-align:center; color:#95a5a6; font-size:1rem;">
+            После отправки ответы нельзя будет изменить
+        </div>
+    </form>
+
+    <div style="text-align:center; margin-top:40px;">
+        <a href="{% url 'subjects_list' cluster.id %}" 
+           style="color:#3498db; text-decoration:none; font-size:1.1rem;">
+            ← Вернуться к списку предметов
+        </a>
+    </div>
+</div>
+{% endblock %}
