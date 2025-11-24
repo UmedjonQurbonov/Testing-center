@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h2>Результат: {{ cluster.name }}</h2>
+<p>Попытка №{{ attempt }}</p>
+
+<h3>Общий результат: {{ total_score }} из {{ total_questions }} правильных</h3>
+
+{% for r in results %}
+    <p>{{ r.subject.name }}: {{ r.score }} / {{ r.total }}</p>
+{% endfor %}
+
+<br>
+<a href="{% url 'subjects_list' cluster.id %}?new=1">Пройти заново</a> |
+<a href="{% url 'home' %}">На главную</a>
+{% endblock %}

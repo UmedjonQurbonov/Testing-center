@@ -1,23 +1,17 @@
-"""
-URL configuration for server project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
+from test_center.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
-]
+    path('auth/', include ('accounts.urls')),
+    path('', index ,name='home'),
+    path("tests/<int:cluster_id>/", cluster_result, name="cluster_result"),
+    path('clusters/', clusters_list, name='clusters_list'),
+    path("tests/<int:cluster_id>/subjects/", subjects_list, name="subjects_list"),
+    path("tests/<int:cluster_id>/<int:subject_id>/start/", start_test, name="start_test"),
+    path("tests/<int:cluster_id>/<int:subject_id>/finish/", finish_test, name="finish_test"),
+    path('tests/<int:cluster_id>/history/', attempts_history, name='attempts_history'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

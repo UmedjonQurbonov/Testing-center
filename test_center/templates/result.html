@@ -1,0 +1,19 @@
+<h2>Результаты по кластеру</h2>
+
+<table border="1" cellpadding="6">
+    <tr>
+        <th>Предмет</th>
+        <th>Попытка</th>
+        <th>Баллы</th>
+        <th>Дата</th>
+    </tr>
+
+    {% for result in results %}
+    <tr>
+        <td>{{ result.subject.name }}</td>
+        <td>{{ result.attempt }}</td>
+        <td>{{ result.score }}/{{ result.total }}</td>
+        <td>{{ result.created_at|date:"d.m.Y H:i" }}</td>
+    </tr>
+    {% endfor %}
+</table>

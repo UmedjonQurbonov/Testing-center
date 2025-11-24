@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Test Center{% endblock %}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #3498db;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            transition: 0.3s;
+        }
+        nav a:hover {
+            background: #3498db;
+        }
+        main {
+            flex: 1;
+            padding: 3rem 0;
+        }
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: auto;
+        }
+
+        /* Кнопки */
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(52,152,219,0.3);
+        }
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        .btn-outline:hover {
+            background: white;
+            color: #3498db;
+        }
+        .btn-success { background: #27ae60; }
+        .btn-success:hover { background: #219a52; }
+
+        /* Карточки */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: 0.4s;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(52,152,219,0.2);
+        }
+        .card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        /* Гриды */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* Текст */
+        .text-center { text-align: center; }
+        .text-muted { color: #95a5a6; font-size: 1.1rem; }
+        .mb-2 { margin-bottom: 2rem; }
+        .mt-4 { margin-top: 4rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">Test Center</h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'home' %}">Главная</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="#">Профиль</a></li>
+                        <li><a href="#">Выйти</a></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Войти</a></li>
+                        <li><a href="{% url 'register' %}">Регистрация</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            {% block main %}{% endblock %}
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 Test Center. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Test Center — Подготовка к Национальному тестированию{% endblock %}
+
+{% block main %}
+<div style="text-align:center; padding:60px 20px; max-width:900px; margin:0 auto;">
+    <h1 style="font-size:3.5rem; color:#2c3e50; margin-bottom:20px;">
+        Test Center
+    </h1>
+    <p style="font-size:1.6rem; color:#555; margin-bottom:30px;">
+        Профессиональная платформа для подготовки к Национальному тестированию
+    </p>
+
+    <div style="font-size:1.3rem; line-height:2; color:#444; margin:40px 0;">
+        <p>Тренируйся на реальных вариантах КИМов</p>
+        <p>Получай точные первичные и тестовые баллы</p>
+        <p>Анализируй ошибки и следи за прогрессом</p>
+        <p>Более 10 000 заданий • Актуальные форматы 2025–2026</p>
+    </div>
+
+    <div style="margin:50px 0;">
+        {% if user.is_authenticated %}
+            <a href="{% url 'clusters_list' %}" 
+               style="display:inline-block; padding:18px 50px; background:#3498db; color:white; 
+                      text-decoration:none; border-radius:50px; font-size:1.4rem; font-weight:600;
+                      box-shadow:0 10px 30px rgba(52,152,219,0.4);">
+                Начать тестирование
+            </a>
+            <p style="margin-top:20px; color:#27ae60; font-weight:600;">
+                Добро пожаловать, {{ user.username }}!
+            </p>
+        {% else %}
+            <a href="#" 
+               style="display:inline-block; padding:18px 50px; background:#3498db; color:white; 
+                      text-decoration:none; border-radius:50px; font-size:1.4rem; font-weight:600;
+                      margin:0 10px; box-shadow:0 10px 30px rgba(52,152,219,0.4);">
+                Войти
+            </a>
+            <a href="{% url 'register' %}" 
+               style="display:inline-block; padding:18px 50px; background:transparent; color:#3498db; 
+                      border:3px solid #3498db; text-decoration:none; border-radius:50px; 
+                      font-size:1.4rem; font-weight:600; margin:0 10px;">
+                Регистрация
+            </a>
+        {% endif %}
+    </div>
+
+    <div style="margin-top:80px; font-size:1.1rem; color:#777;">
+        <p>Полная имитация реального экзамена • Без рекламы • Бесплатно</p>
+    </div>
+</div>
+{% endblock %}

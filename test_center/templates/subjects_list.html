@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div style="max-width:900px; margin:0 auto; padding:20px;">
+
+    <div style="text-align:center; margin-bottom:40px;">
+        <h1 style="font-size:2.8rem; color:#2c3e50; margin-bottom:10px;">
+            {{ cluster.name }}
+        </h1>
+        <p style="font-size:1.3rem; color:#666;">
+            Полный вариант • Национальный экзамен 2025–2026
+        </p>
+    </div>
+
+    {% if all_completed %}
+        <div style="background:#d4edda; color:#155724; padding:30px; border-radius:16px; 
+                    text-align:center; border:2px solid #c3e6cb; margin-bottom:40px;">
+            <h2 style="font-size:2rem; margin-bottom:15px;">
+                Поздравляем! Кластер полностью пройден
+            </h2>
+            <div style="margin:25px 0;">
+                <a href="{% url 'cluster_result' cluster.id %}?attempt={{ current_attempt }}" 
+                   style="display:inline-block; padding:16px 40px; background:#28a745; color:white; 
+                          text-decoration:none; border-radius:50px; font-size:1.3rem; font-weight:600;
+                          box-shadow:0 8px 20px rgba(40,167,69,0.3);">
+                    Посмотреть результат
+                </a>
+            </div>
+            <div>
+                <a href="?retry=1" style="color:#007bff; font-size:1.1rem; text-decoration:underline;">
+                    Пройти заново (новая попытка)
+                </a>
+            </div>
+        </div>
+    {% else %}
+        <div style="background:white; padding:20px; border-radius:16px; box-shadow:0 8px 25px rgba(0,0,0,0.08);
+                    text-align:center; margin-bottom:40px; border-left:6px solid #3498db;">
+            <p style="font-size:1.4rem; color:#2c3e50;">
+                Сдано предметов: 
+                <strong style="color:#27ae60; font-size:1.8rem;">{{ completed_count }}</strong> 
+                из <strong style="font-size:1.8rem;">{{ total_subjects }}</strong>
+            </p>
+        </div>
+    {% endif %}
+
+    <div style="display:grid; gap:25px; grid-template-columns:repeat(auto-fit, minmax(340px, 1fr));">
+        {% for subject in subjects %}
+        <div style="background:white; border-radius:16px; padding:28px; text-align:center;
+                    box-shadow:0 10px 30px rgba(0,0,0,0.08); transition:all 0.3s ease;
+                    border-left:6px solid 
+                    {% if subject.id in completed_in_current %}#27ae60{% else %}#3498db{% endif %};">
+
+            <h3 style="font-size:1.7rem; color:#2c3e50; margin-bottom:15px;">
+                {{ subject.name }}
+            </h3>
+
+            {% with found=False %}
+                {% for r in user_results %}
+                    {% if r.subject == subject and r.attempt == current_attempt %}
+                        <div style="margin:20px 0;">
+                            <p style="font-size:2rem; color:#27ae60; font-weight:bold;">
+                                {{ r.score }} из {{ r.total }}
+                            </p>
+                            <p style="color:#28a745; background:#d4edda; padding:12px; border-radius:12px; font-weight:600;">
+                                Сдано успешно
+                            </p>
+                            <p style="color:#999; font-style:italic; margin-top:15px;">
+                                Пересдача невозможна
+                            </p>
+                        </div>
+                        {% with found=True %}{% endwith %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if not found %}
+                    <div style="margin:25px 0;">
+                        <p style="color:#95a5a6; font-size:1.1rem; margin-bottom:20px;">
+                            Готов к прохождению
+                        </p>
+                        <a href="{% url 'start_test' cluster.id subject.id %}" 
+                           style="display:inline-block; padding:16px 45px; background:#3498db; color:white;
+                                  text-decoration:none; border-radius:50px; font-weight:600; font-size:1.2rem;
+                                  box-shadow:0 8px 20px rgba(52,152,219,0.3);">
+                            Пройти тест
+                        </a>
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <div style="text-align:center; margin-top:50px; display:flex; justify-content:center; gap:30px; flex-wrap:wrap;">
+        <a href="{% url 'attempts_history' cluster.id %}" 
+           style="color:#3498db; font-size:1.1rem; text-decoration:underline;">
+            История всех попыток
+        </a>
+        <a href="{% url 'clusters_list' %}" 
+           style="color:#3498db; font-size:1.1rem; text-decoration:none;">
+            ← Назад к направлениям
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h2>Кластеры</h2>
+
+<ul>
+    {% for cluster in clusters %}
+        <li>
+            <a href="{% url 'subjects_list' cluster.id %}">{{ cluster.name }}</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}
