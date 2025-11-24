@@ -38,17 +38,16 @@ def register_view(request):
 
     
 def login_view(request):
-    if request.method=="GET":
-        return render(request,"login.html")
-    elif request.method=="POST":
-        username = request.POST.get("username", None)
-        password = request.POST.get("password", None)
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
-        if user is None:
-            return render(request,"login.html", context={"username":username, "Error":"Invalid credentials"})
-        
-        login(request, user)
-        return redirect("user_list")  
+        if user:
+            login(request, user)
+            return redirect("home")
+        else:
+            return render(request, "login.html", {"Error": "Invalid credentials"})
+    return render(request, "login.html")
 
 @login_required
 def user_list_view(request):
