@@ -1,90 +1,67 @@
+<!-- attempts_history.html — БЕ extra_filters, 100% кор мекунад -->
 {% extends "base.html" %}
 
-{% block main %}
+{% block title %}Таърихи кӯшишҳо • {{ cluster.name }}{% endblock %}
 
-<div style="max-width:1000px; margin:40px auto; padding:20px;">
-    <h1 style="text-align:center; font-size:2.8rem; color:#2c3e50; margin-bottom:20px;">
-        {{ cluster.name }} — История попыток
+{% block main %}
+<div style="max-width:1100px; margin:60px auto; padding:20px;">
+    <h1 style="text-align:center; font-size:3.8rem; color:var(--dark); margin-bottom:20px;">
+        {{ cluster.name }}
     </h1>
-    <p style="text-align:center; font-size:1.3rem; color:#666; margin-bottom:50px;">
-        Все твои результаты сохранены навсегда
+    <p style="text-align:center; font-size:1.8rem; color:var(--gray); margin-bottom:50px;">
+        Таърихи ҳамаи кӯшишҳо
     </p>
 
-```
-{% if attempts %}
-    {% for attempt_num, data in attempts.items %}
-    {% if data.completed %}
-        {% with border_class="completed" color="#27ae60" %}
+    {% if attempts %}
+        {% for attempt in attempts %}
+        <div style="background:white; border-radius:24px; padding:35px; margin-bottom:30px; box-shadow:0 20px 50px rgba(0,0,0,0.1); 
+                    border-left:8px solid {% if attempt.completed %}#00813E{% else %}#D1282D{% endif %};">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
+                <div>
+                    <h3 style="font-size:2.4rem; margin:0;">
+                        Кӯшиши №{{ attempt.attempt_number }}
+                        {% if attempt.completed %}
+                            <span style="color:#00813E; font-weight:700;">Супорида шуд</span>
+                        {% else %}
+                            <span style="color:#D1282D; font-weight:700;">Нопурра</span>
+                        {% endif %}
+                    </h3>
+                    <p style="color:#777; margin:10px 0;">
+                        {{ attempt.last_date|date:"d.m.Y H:i" }}
+                    </p>
+                </div>
+                <div style="text-align:center;">
+                    <div style="font-size:4rem; font-weight:900; color:{% if attempt.completed %}#00813E{% else %}#D1282D{% endif %};">
+                        {{ attempt.total_score }} / {{ attempt.total_questions }}
+                    </div>
+                    <div style="font-size:1.6rem; color:var(--dark);">
+                        {% widthratio attempt.total_score attempt.total_questions 100 %}%
+                    </div>
+                </div>
+            </div>
+            {% if attempt.completed %}
+            <div style="text-align:right; margin-top:20px;">
+                <a href="{% url 'cluster_result' cluster.id %}?attempt={{ attempt.attempt_number }}"
+                   style="color:#D1282D; font-weight:700; text-decoration:underline;">
+                    Натиҷаи муфассал
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
     {% else %}
-        {% with border_class="not-completed" color="#e67e22" %}
-    {% endif %}
-
-    <div style="background:white; border-radius:20px; padding:30px; margin-bottom:30px; 
-                box-shadow:0 15px 40px rgba(0,0,0,0.1); 
-                border-left:8px solid {{ color }}">
-        
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <div>
-                <h2 style="font-size:2rem; color:#2c3e50; margin:0;">
-                    Попытка №{{ attempt_num }}
-                    {% if data.completed %}
-                        <span style="color:#27ae60; font-weight:600;">Завершена</span>
-                    {% else %}
-                        <span style="color:#e67e22; font-weight:600;">Не завершена</span>
-                    {% endif %}
-                </h2>
-                <p style="color:#777; margin:5px 0;">
-                    Последнее действие: {{ data.last_date|date:"d.m.Y в H:i" }}
-                </p>
-            </div>
-            <div style="text-align:right;">
-                <div style="font-size:2.5rem; font-weight:bold; color:{{ color }};">
-                    {{ data.total_score }} / {{ data.total_questions }}
-                </div>
-                <div style="color:#777;">
-                    {{ data.subjects_count }} из {{ total_subjects }} предметов
-                </div>
-            </div>
-        </div>
-
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:15px;">
-            {% for r in data.results %}
-            <div style="background:#f8f9fa; padding:14px; border-radius:12px; text-align:center;">
-                <div style="font-weight:600; color:#2c3e50;">{{ r.subject.name }}</div>
-                <div style="font-size:1.5rem; margin:8px 0;">
-                    {{ r.score }} / {{ r.total }}
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-
-        {% if data.completed %}
-        <div style="text-align:center; margin-top:20px;">
-            <a href="{% url 'cluster_result' cluster.id %}?attempt={{ attempt_num }}"
-               style="color:#27ae60; font-weight:600; text-decoration:underline; font-size:1.1rem;">
-                Подробный результат
+        <div style="text-align:center; padding:100px; color:#95a5a6;">
+            <p style="font-size:2rem;">Ҳанӯз ягон кӯшиш нест</p>
+            <a href="{% url 'subjects_list' cluster.id %}" class="btn btn-red" style="margin-top:30px;">
+                Оғоз кардан
             </a>
         </div>
-        {% endif %}
-    </div>
-    {% endwith %}
-    {% endfor %}
-{% else %}
-    <div style="text-align:center; padding:80px; background:white; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.1);">
-        <p style="font-size:1.5rem; color:#95a5a6;">Пока нет ни одной попытки</p>
-        <a href="{% url 'subjects_list' cluster.id %}" 
-           style="margin-top:20px; padding:16px 50px; background:#3498db; color:white; border-radius:50px; text-decoration:none;">
-            Начать тестирование
+    {% endif %}
+
+    <div style="text-align:center; margin-top:60px;">
+        <a href="{% url 'clusters_list' %}" style="color:#D1282D; font-size:1.4rem; text-decoration:underline;">
+            Ба самтҳо баргаштан
         </a>
     </div>
-{% endif %}
-
-<div style="text-align:center; margin-top:50px;">
-    <a href="{% url 'subjects_list' cluster.id %}" style="color:#3498db; text-decoration:none;">
-        Вернуться к предметам
-    </a>
-</div>
-```
-
 </div>
 {% endblock %}

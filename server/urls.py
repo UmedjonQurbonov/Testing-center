@@ -6,8 +6,8 @@ from test_center.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include ('accounts.urls')),
-    path('auth/', login_required(index), name='home'),
+    path('auth/', include ('accounts.urls')),
+    path('', index ,name='home'),
     path("tests/<int:cluster_id>/", cluster_result, name="cluster_result"),
     path('clusters/', clusters_list, name='clusters_list'),
     path("tests/<int:cluster_id>/subjects/", subjects_list, name="subjects_list"),

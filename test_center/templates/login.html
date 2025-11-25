@@ -1,0 +1,185 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Вход в систему — Test Center{% endblock %}
+
+{% block main %}
+<style>
+    /* Марказонидани форма */
+    .auth-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 70vh; /* Баландии мувофиқ */
+    }
+
+    .auth-card {
+        background: white;
+        width: 100%;
+        max-width: 420px;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        text-align: center;
+        border: 1px solid rgba(0,0,0,0.03);
+    }
+
+    .auth-header h3 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    .auth-header p {
+        color: #7f8c8d;
+        font-size: 0.95rem;
+        margin-bottom: 30px;
+    }
+
+    /* Input Groups бо иконаҳо */
+    .input-group {
+        position: relative;
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .input-group label {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #34495e;
+        margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-wrapper i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #95a5a6;
+        transition: 0.3s;
+    }
+
+    .form-control-custom {
+        width: 100%;
+        padding: 14px 14px 14px 45px; /* Ҷой барои икона */
+        border: 2px solid #eef2f3;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: 0.3s;
+        outline: none;
+        background: #f8f9fa;
+    }
+
+    .form-control-custom:focus {
+        border-color: #4361ee;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.1);
+    }
+
+    .form-control-custom:focus + i {
+        color: #4361ee; /* Ранги икона ҳангоми навиштан */
+    }
+
+    /* Тугмаи даромад */
+    .btn-login {
+        width: 100%;
+        padding: 14px;
+        background: #4361ee;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 10px;
+        box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
+
+    .btn-login:hover {
+        background: #3f37c9;
+        transform: translateY(-2px);
+    }
+
+    /* Истинодҳои иловагӣ */
+    .auth-footer {
+        margin-top: 25px;
+        font-size: 0.95rem;
+        color: #7f8c8d;
+    }
+
+    .auth-footer a {
+        color: #4361ee;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .auth-footer a:hover {
+        text-decoration: underline;
+    }
+
+    /* Alert Style */
+    .alert-custom {
+        padding: 12px;
+        background: #ffe5e5;
+        color: #d63031;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+</style>
+
+<div class="auth-container">
+    <div class="auth-card fade-in">
+        <div class="auth-header">
+            <h3>Добро пожаловать</h3>
+            <p>Войдите, чтобы продолжить тестирование</p>
+        </div>
+
+        {% if Error %}
+            <div class="alert-custom">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                {{ Error }}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <label>Имя пользователя</label>
+                <div class="input-wrapper">
+                    <input type="text" class="form-control-custom" name="username" value="{{ username }}" placeholder="Ваш Имя" required>
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Пароль</label>
+                <div class="input-wrapper">
+                    <input type="password" class="form-control-custom" name="password" placeholder="••••••••" required>
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login">
+                Войти <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Еще нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,176 +1,131 @@
+<!-- templates/base.html -->
 {% load static %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="tj" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Test Center{% endblock %}</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <title>{% block title %}Test Center Tajikistan{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
-            --primary: #4361ee;
-            --secondary: #3f37c9;
-            --accent: #4895ef;
-            --success: #4cc9f0;
-            --dark: #2b2d42;
-            --light: #f8f9fa;
-            --glass: rgba(255, 255, 255, 0.85);
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --red: #D1282D;
+            --white: #FFFFFF;
+            --green: #00813E;
+            --gold: #FBBF24;
+            --dark: #1e293b;
+            --gray: #64748b;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
+        * { margin:0; padding:0; box-sizing:border-box; }
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #eef2f3 0%, #e2e2e2 100%);
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             color: var(--dark);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
         }
-
-        /* Header with Glassmorphism */
         header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: var(--dark);
+            padding: 1.2rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             position: sticky;
             top: 0;
             z-index: 1000;
-            padding: 1rem 0;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
         }
-
-        .container {
-            width: 90%;
-            max-width: 1200px;
+        .header-container {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 15px;
-        }
-
-        header .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 30px;
         }
-
         .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--primary);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 2.4rem;
+            font-weight: 900;
+            color: white;
         }
-        
-        .logo i { color: var(--secondary); }
-
+        .logo span { color: var(--gold); }
         nav ul {
             display: flex;
+            gap: 2rem;
             list-style: none;
-            gap: 1.5rem;
         }
-
         nav a {
-            color: var(--dark);
+            color: white;
             text-decoration: none;
             font-weight: 600;
-            font-size: 0.95rem;
+            padding: 0.7rem 1.3rem;
+            border-radius: 50px;
             transition: 0.3s;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
         }
-
         nav a:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-2px);
+            background: var(--red);
+            transform: translateY(-3px);
         }
-
-        /* Main Content */
         main {
             flex: 1;
-            padding: 2rem 0;
+            padding: 40px 20px;
         }
-
-        /* Footer */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
         footer {
             background: var(--dark);
             color: white;
             text-align: center;
-            padding: 3rem 0;
+            padding: 2rem;
             margin-top: auto;
         }
-        
-        footer p { opacity: 0.7; font-size: 0.9rem; }
-
-        /* Common UI Elements */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 16px 36px;
-            background: var(--primary);
+        .flag-stripe {
+            height: 6px;
+            background: linear-gradient(to right, var(--red) 33.33%, white 33.33%, white 66.66%, var(--green) 66.66%);
+        }
+        .btn-primary {
+            display: inline-block;
+            padding: 16px 48px;
+            background: var(--red);
             color: white;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
             text-decoration: none;
-            border-radius: 12px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
-            border: none;
-            cursor: pointer;
-            font-size: 1.1rem;
+            box-shadow: 0 10px 30px rgba(209,40,45,0.4);
+            transition: 0.3s;
         }
-
-        .btn:hover {
-            background: var(--secondary);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(209,40,45,0.5);
         }
-
-        .btn-outline {
+        .card {
             background: white;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            box-shadow: none;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: 0.4s;
         }
-
-        .btn-outline:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* Animation Fade In */
-        .fade-in {
-            animation: fadeIn 0.8s ease-out forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .card:hover { transform: translateY(-15px); }
     </style>
 </head>
 <body>
+    <div class="flag-stripe"></div>
     <header>
-        <div class="container">
-            <a href="{% url 'home' %}" class="logo">
-                <i class="fa-solid fa-graduation-cap"></i> Test Center
-            </a>
+        <div class="header-container">
+            <h1 class="logo">Test<span>Center</span> TJ</h1>
             <nav>
                 <ul>
-                    <li><a href="{% url 'home' %}">Главная</a></li>
+                    <li><a href="{% url 'home' %}">Асосӣ</a></li>
                     {% if user.is_authenticated %}
-                        <li><a href="#"><i class="fa-regular fa-user"></i> Профиль</a></li>
-                        <li><a href="#" style="color: #e63946;">Выйти</a></li>
+                        <li><a href="{% url 'clusters_list' %}">Тестҳо</a></li>
+                        <li><a href="{% url 'profile' %}">Профил</a></li>
+                        <li><a href="{% url 'logout' %}">Баромад</a></li>
                     {% else %}
-                        <li><a href="{% url 'login' %}">Войти</a></li>
-                        <li><a href="{% url 'register' %}" class="btn-sm">Регистрация</a></li>
+                        <li><a href="{% url 'login' %}">Ворид шудан</a></li>
+                        <li><a href="{% url 'register' %}">Регистратсия</a></li>
                     {% endif %}
                 </ul>
             </nav>
@@ -184,9 +139,8 @@
     </main>
 
     <footer>
-        <div class="container">
-            <p>© 2025 Test Center. Платформа для подготовки к НТМ.</p>
-        </div>
+        <p>© 2025 Test Center Tajikistan • Маркази Миллии Тестирование</p>
+        <p style="margin-top:8px; font-size:0.9rem;">Тел: +992 88 123-45-67 • Email: info@testcenter.tj</p>
     </footer>
 </body>
 </html>

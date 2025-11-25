@@ -1,0 +1,201 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Регистрация — Test Center{% endblock %}
+
+{% block main %}
+<style>
+    /* Истифодаи ҳамон услубҳои Login барои якрангӣ */
+    .auth-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh; /* Баландиро каме зиёд кардем, чунки форма калонтар аст */
+        padding: 20px;
+    }
+
+    .auth-card {
+        background: white;
+        width: 100%;
+        max-width: 450px; /* Каме васеътар барои роҳатӣ */
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        text-align: center;
+        border: 1px solid rgba(0,0,0,0.03);
+    }
+
+    .auth-header h3 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    .auth-header p {
+        color: #7f8c8d;
+        font-size: 0.95rem;
+        margin-bottom: 25px;
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    .input-group label {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #34495e;
+        margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-wrapper i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #95a5a6;
+        transition: 0.3s;
+        font-size: 1rem;
+    }
+
+    .form-control-custom {
+        width: 100%;
+        padding: 14px 14px 14px 45px;
+        border: 2px solid #eef2f3;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: 0.3s;
+        outline: none;
+        background: #f8f9fa;
+    }
+
+    .form-control-custom:focus {
+        border-color: #4cc9f0; /* Ранги равшантар барои сабти ном */
+        background: white;
+        box-shadow: 0 0 0 4px rgba(76, 201, 240, 0.1);
+    }
+
+    .form-control-custom:focus + i {
+        color: #4cc9f0;
+    }
+
+    .btn-register {
+        width: 100%;
+        padding: 14px;
+        background: #2b2d42; /* Ранги тиратар барои фарқ кардан аз Login */
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 15px;
+        box-shadow: 0 5px 15px rgba(43, 45, 66, 0.3);
+    }
+
+    .btn-register:hover {
+        background: #4361ee;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+    }
+
+    .auth-footer {
+        margin-top: 25px;
+        font-size: 0.95rem;
+        color: #7f8c8d;
+    }
+
+    .auth-footer a {
+        color: #4361ee;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .auth-footer a:hover {
+        text-decoration: underline;
+    }
+
+    .alert-custom {
+        padding: 12px;
+        background: #ffe5e5;
+        color: #d63031;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+</style>
+
+<div class="auth-container">
+    <div class="auth-card fade-in">
+        <div class="auth-header">
+            <h3>Создать аккаунт</h3>
+            <p>Начни подготовку к экзаменам прямо сейчас</p>
+        </div>
+
+        {% if Error %}
+            <div class="alert-custom">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                {{ Error }}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <label>Имя пользователя</label>
+                <div class="input-wrapper">
+                    <input type="text" class="form-control-custom" name="username" value="{{ username }}" placeholder="Ваш Имя" required>
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Электронная почта</label>
+                <div class="input-wrapper">
+                    <input type="email" class="form-control-custom" name="email" value="{{ email }}" placeholder="name@example.com" required>
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Пароль</label>
+                <div class="input-wrapper">
+                    <input type="password" class="form-control-custom" name="password" placeholder="Минимум 8 символов" required>
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Повторите пароль</label>
+                <div class="input-wrapper">
+                    <input type="password" class="form-control-custom" name="confirm" placeholder="Повторите пароль" required>
+                    <i class="fa-solid fa-check-double"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-register">
+                Зарегистрироваться
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -60,3 +60,38 @@ def logout_view(request):
     logout(request)
     return redirect("login")
 
+from django.contrib import messages
+from django.core.files.storage import default_storage
+from .models import UserProfile
+
+@login_required
+def profile_edit(request):
+    # Получаем или создаём профиль
+    profile, created = UserProfile.objects.get_or_create(usern=request.user)
+
+    if request.method == "POST":
+        # Сохраняем bio
+        profile.bio = request.POST.get("bio", "").strip() or None
+
+        # Сохраняем аватар
+        if "avatar" in request.FILES:
+            # Удаляем старый, если был
+            if profile.avatar:
+                default_storage.delete(profile.avatar.path)
+            profile.avatar = request.FILES["avatar"]
+        # Удаление аватара по галочке
+        elif request.POST.get("remove_avatar") == "on" and profile.avatar:
+            default_storage.delete(profile.avatar.path)
+            profile.avatar = None
+
+        profile.save()
+        messages.success(request, "Профиль сохранён!")
+        return redirect("accounts:profile")
+
+    return render(request, "profile_edit.html", {"profile": profile})
+
+
+@login_required
+def profile_view(request):
+    profile, created = UserProfile.objects.get_or_create(usern=request.user)
+    return render(request, "profile_view.html", {"profile": profile})

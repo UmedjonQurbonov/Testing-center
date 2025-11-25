@@ -1,13 +1,33 @@
+<!-- templates/clusters_list.html -->
 {% extends "base.html" %}
-
 {% block main %}
-<h2>Кластеры</h2>
+<div style="text-align:center; padding:60px 20px;">
+    <h1 style="font-size:3.5rem; color:var(--dark); margin-bottom:20px;">
+        Интихоби самти тестирование
+    </h1>
+    <p style="font-size:1.6rem; color:#555; margin-bottom:60px;">
+        Вариантҳои пурраи имтиҳони миллӣ бо фанҳои ҳатмӣ ва ихтиёрӣ
+    </p>
 
-<ul>
-    {% for cluster in clusters %}
-        <li>
-            <a href="{% url 'subjects_list' cluster.id %}">{{ cluster.name }}</a>
-        </li>
-    {% endfor %}
-</ul>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(380px, 1fr)); gap:40px; max-width:1400px; margin:0 auto;">
+        {% for cluster in clusters %}
+        <div class="card" style="border-left:8px solid var(--red);">
+            <h2 style="font-size:2.2rem; color:var(--red); margin-bottom:15px;">
+                {{ cluster.name }}
+            </h2>
+            <p style="font-size:1.4rem; color:var(--gray); margin:20px 0;">
+                {{ cluster.subjects.count }} фан • {{ cluster.subjects.count|multiply:30 }} дақиқа
+            </p>
+            <p style="color:var(--dark); font-weight:600; margin:15px 0;">
+                Попытка №{{ cluster.current_attempt|default:1 }}
+            </p>
+            <a href="{% url 'subjects_list' cluster.id %}" class="btn-primary" style="background:var(--green); margin-top:20px;">
+                Оғоз кардан
+            </a>
+        </div>
+        {% empty %}
+        <p style="grid-column:1/-1; font-size:2rem; color:#999;">Ҳоло самтҳо нестанд</p>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

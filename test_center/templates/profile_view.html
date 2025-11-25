@@ -1,0 +1,76 @@
+<!-- templates/profile_view.html — версияи ниҳоӣ ва коркунанда -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block main %}
+<div style="max-width:1100px; margin:60px auto; padding:20px;">
+
+    <!-- Профили асосӣ -->
+    <div style="background:white; border-radius:28px; padding:50px; box-shadow:0 25px 60px rgba(0,0,0,0.15); text-align:center; margin-bottom:50px;">
+        
+        {% if profile.avatar %}
+            <img src="{{ profile.avatar.url }}" style="width:190px; height:190px; border-radius:50%; object-fit:cover; border:10px solid white; box-shadow:0 20px 50px rgba(0,0,0,0.2);">
+        {% else %}
+            <div style="width:190px; height:190px; border-radius:50%; background:linear-gradient(135deg,#D1282D,#00813E); display:flex; align-items:center; justify-content:center; color:white; font-size:6.5rem; font-weight:900; box-shadow:0 20px 50px rgba(0,0,0,0.3);">
+                {{ request.user.username.0|upper }}
+            </div>
+        {% endif %}
+
+        <h1 style="font-size:3.8rem; color:#1e293b; margin:25px 0 10px; font-weight:900;">
+            {{ request.user.get_full_name|default:request.user.username }}
+        </h1>
+        <p style="font-size:1.5rem; color:#64748b; margin-bottom:30px;">
+            {{ request.user.email }}
+        </p>
+
+        <a href="{% url 'profile_edit' %}" style="padding:16px 50px; background:#D1282D; color:white; border-radius:50px; text-decoration:none; font-weight:700; font-size:1.3rem;">
+            Таҳрир кардани профил
+        </a>
+
+        {% if profile.bio %}
+            <div style="margin:40px auto; max-width:800px; padding:30px; background:#f8f9fa; border-radius:20px; font-size:1.4rem; line-height:1.9; color:#333; border-left:7px solid #FBBF24;">
+                {{ profile.bio|linebreaks }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Кластерҳо бо таърих -->
+    <div style="background:white; border-radius:24px; padding:40px; box-shadow:0 20px 50px rgba(0,0,0,0.12);">
+        <h2 style="font-size:2.6rem; text-align:center; margin-bottom:40px; color:#1e293b;">
+            Таърихи кӯшишҳо аз рӯи самтҳо
+        </h2>
+
+        {% if clusters_with_results %}
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(350px, 1fr)); gap:30px;">
+                {% for item in clusters_with_results %}
+                <div style="background:#f8f9fa; border-radius:20px; padding:30px; text-align:center; border-left:8px solid {% if item.completed %}#00813E{% else %}#e74c3c{% endif %};">
+                    <h3 style="font-size:2rem; color:#1e293b; margin-bottom:15px;">
+                        {{ item.cluster.name }}
+                    </h3>
+                    <p style="font-size:1.4rem; color:#555;">
+                        Беҳтарин кӯшиш: <strong>{{ item.best_score }} / {{ item.total_questions }}</strong>
+                    </p>
+                    <p style="color:{% if item.completed %}#00813E{% else %}#e67e22{% endif %}; font-weight:600; margin:15px 0;">
+                        {% if item.completed %}Супорида шуд{% else %}Нопурра{% endif %}
+                    </p>
+                    <a href="{% url 'attempts_history' item.cluster.id %}" 
+                       style="display:inline-block; padding:14px 40px; background:{% if item.completed %}#00813E{% else %}#D1282D{% endif %}; color:white; border-radius:50px; text-decoration:none; font-weight:600; margin-top:15px;">
+                        Дидани таърих
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="text-align:center; padding:60px; color:#95a5a6; font-size:1.6rem; font-style:italic;">
+                Ҳанӯз ягон тест супорида нашудааст. <a href="{% url 'clusters_list' %}" style="color:#D1282D; font-weight:bold;">Оғоз кунед!</a>
+            </p>
+        {% endif %}
+    </div>
+
+    <div style="text-align:center; margin-top:50px;">
+        <a href="{% url 'clusters_list' %}" style="color:#D1282D; font-size:1.4rem; text-decoration:underline;">
+            Ба самтҳо баргаштан
+        </a>
+    </div>
+</div>
+{% endblock %}
