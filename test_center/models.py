@@ -56,3 +56,24 @@ class UserAnswer(models.Model):
 
     def __str__(self):
         return f"{self.question.text[:20]} - {self.answer.text}"
+
+
+class ActiveTestSession(models.Model):
+    user = models.ForeignKey("accounts.CustomUser", on_delete=models.CASCADE)
+    cluster = models.ForeignKey(Cluster, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    attempt = models.IntegerField()
+    current_question_index = models.IntegerField(default=0)  # Аз 0 сар мешавад
+    started_at = models.DateTimeField(default=timezone.now)
+    last_activity = models.DateTimeField(auto_now=True)
+    answers = models.JSONField(default=dict)  # { "question_id": answer_id }
+
+    class Meta:
+        unique_together = ('user', 'cluster', 'subject', 'attempt')
+
+    def time_elapsed(self):
+        return (timezone.now() - self.started_at).total_seconds()
+
+    def is_expired(self):
+        # Масалан, умуман 2 соат вақт барои тамом кардани тест
+        return self.time_elapsed() > 2 * 3600

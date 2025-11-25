@@ -1,146 +1,131 @@
+<!-- templates/base.html -->
 {% load static %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="tj" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Test Center{% endblock %}</title>
+    <title>{% block title %}Test Center Tajikistan{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --red: #D1282D;
+            --white: #FFFFFF;
+            --green: #00813E;
+            --gold: #FBBF24;
+            --dark: #1e293b;
+            --gray: #64748b;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            color: #333;
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: var(--dark);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
         header {
-            background: #2c3e50;
-            color: white;
-            padding: 1.5rem 0;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            background: var(--dark);
+            padding: 1.2rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
-        header .container {
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
+            padding: 0 30px;
         }
         .logo {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: #3498db;
+            font-size: 2.4rem;
+            font-weight: 900;
+            color: white;
         }
+        .logo span { color: var(--gold); }
         nav ul {
             display: flex;
-            list-style: none;
             gap: 2rem;
+            list-style: none;
         }
         nav a {
             color: white;
             text-decoration: none;
-            font-weight: 500;
-            padding: 0.6rem 1.2rem;
-            border-radius: 30px;
+            font-weight: 600;
+            padding: 0.7rem 1.3rem;
+            border-radius: 50px;
             transition: 0.3s;
         }
         nav a:hover {
-            background: #3498db;
+            background: var(--red);
+            transform: translateY(-3px);
         }
         main {
             flex: 1;
-            padding: 3rem 0;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
         footer {
-            background: #2c3e50;
+            background: var(--dark);
             color: white;
             text-align: center;
-            padding: 2rem 0;
+            padding: 2rem;
             margin-top: auto;
         }
-
-        /* Кнопки */
-        .btn {
+        .flag-stripe {
+            height: 6px;
+            background: linear-gradient(to right, var(--red) 33.33%, white 33.33%, white 66.66%, var(--green) 66.66%);
+        }
+        .btn-primary {
             display: inline-block;
-            padding: 14px 32px;
-            background: #3498db;
+            padding: 16px 48px;
+            background: var(--red);
             color: white;
-            text-decoration: none;
             border-radius: 50px;
-            font-weight: 600;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(209,40,45,0.4);
             transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(52,152,219,0.3);
         }
-        .btn:hover {
-            background: #2980b9;
-            transform: translateY(-3px);
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(209,40,45,0.5);
         }
-        .btn-outline {
-            background: transparent;
-            border: 2px solid white;
-            color: white;
-        }
-        .btn-outline:hover {
-            background: white;
-            color: #3498db;
-        }
-        .btn-success { background: #27ae60; }
-        .btn-success:hover { background: #219a52; }
-
-        /* Карточки */
         .card {
             background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
             text-align: center;
             transition: 0.4s;
         }
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(52,152,219,0.2);
-        }
-        .card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: #2c3e50;
-        }
-
-        /* Гриды */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        /* Текст */
-        .text-center { text-align: center; }
-        .text-muted { color: #95a5a6; font-size: 1.1rem; }
-        .mb-2 { margin-bottom: 2rem; }
-        .mt-4 { margin-top: 4rem; }
+        .card:hover { transform: translateY(-15px); }
     </style>
 </head>
 <body>
+    <div class="flag-stripe"></div>
     <header>
-        <div class="container">
-            <h1 class="logo">Test Center</h1>
+        <div class="header-container">
+            <h1 class="logo">Test<span>Center</span> TJ</h1>
             <nav>
                 <ul>
-                    <li><a href="{% url 'home' %}">Главная</a></li>
+                    <li><a href="{% url 'home' %}">Асосӣ</a></li>
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'profile' %}">Профиль</a></li>
-                        <li><a href="{% url 'login' %}">Выйти</a></li>
+                        <li><a href="{% url 'clusters_list' %}">Тестҳо</a></li>
+                        <li><a href="{% url 'profile' %}">Профил</a></li>
+                        <li><a href="{% url 'logout' %}">Баромад</a></li>
                     {% else %}
-                        <li><a href="{% url 'login' %}">Войти</a></li>
-                        <li><a href="{% url 'register' %}">Регистрация</a></li>
+                        <li><a href="{% url 'login' %}">Ворид шудан</a></li>
+                        <li><a href="{% url 'register' %}">Регистратсия</a></li>
                     {% endif %}
                 </ul>
             </nav>
@@ -154,9 +139,8 @@
     </main>
 
     <footer>
-        <div class="container">
-            <p>© 2025 Test Center. Все права защищены.</p>
-        </div>
+        <p>© 2025 Test Center Tajikistan • Маркази Миллии Тестирование</p>
+        <p style="margin-top:8px; font-size:0.9rem;">Тел: +992 88 123-45-67 • Email: info@testcenter.tj</p>
     </footer>
 </body>
 </html>

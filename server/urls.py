@@ -14,4 +14,6 @@ urlpatterns = [
     path("tests/<int:cluster_id>/<int:subject_id>/start/", start_test, name="start_test"),
     path("tests/<int:cluster_id>/<int:subject_id>/finish/", finish_test, name="finish_test"),
     path('tests/<int:cluster_id>/history/', attempts_history, name='attempts_history'),
+    path('ajax/save-answer/', save_answer, name='save_answer'),
+    path('ajax/update-progress/', update_progress, name='update_progress'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
